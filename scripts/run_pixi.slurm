@@ -45,7 +45,7 @@ OUT=$PROJECT/comethyl_output/consensus
 
 # Reference filter labels (derived from scripts 01 and 02)
 CPG_LABEL=cov3_75pct
-REGION_LABEL=covMin14_methSD0p06 #covMin14_methSD0p06 covMin10_methSD0p09
+REGION_LABEL=covMin10_methSD0p09 #covMin14_methSD0p06 covMin10_methSD0p09
 
 # # ================================================================
 # # SCRIPT 00: Import CpG reports (one per dataset)
@@ -439,6 +439,25 @@ pixi run Rscript $SCRIPTS/12a_me_trait_analysis_consensus.R \
   --dataset2_sample_info $DATA/sample_info_36_38wk.xlsx \
   --dataset3_label Postpartum \
   --dataset3_sample_info $DATA/sample_info_postpartum.xlsx \
+  --run_bicor TRUE \
+  --run_pearson FALSE \
+  --p_thresh 0.05 \
+  --top_n 50 \
+  --module_dendro_distance bicor \
+  --max_p_outliers 0.1
+
+# v2 lipids ME and some traits
+pixi run Rscript $SCRIPTS/12a_me_trait_analysis_consensus.R \
+  --project_root $PROJECT \
+  --consensus_modules_rds $OUT/09_consensus_modules/shared/$CPG_LABEL/$REGION_LABEL/v2_exclude_protected_pcs/Consensus_Modules.rds \
+  --regions_file $OUT/02_reference_region_filter/Baseline/$CPG_LABEL/$REGION_LABEL/Filtered_Regions.txt \
+  --adjustment_version v2_exclude_protected_pcs \
+  --dataset1_label Baseline \
+  --dataset1_sample_info $DATA/Lipids_ME_traits_baseline.xlsx \
+  --dataset2_label 36-38wk \
+  --dataset2_sample_info $DATA/Lipids_ME_traits_wk36.xlsx \
+  --dataset3_label Postpartum \
+  --dataset3_sample_info $DATA/Lipids_ME_traits_postpart.xlsx \
   --run_bicor TRUE \
   --run_pearson FALSE \
   --p_thresh 0.05 \
